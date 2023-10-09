@@ -2,7 +2,7 @@
   "name": "psd-to-html",
   "version": "1.0.0",
   "description": "A description of your project",
-  "main": "index.html",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },

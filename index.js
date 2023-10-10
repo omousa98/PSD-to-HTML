@@ -16,9 +16,34 @@ const server = http.createServer((req, res) => {
                 res.end(data);
             }
         });
+    } else if (req.url === '/style.css') {
+        const cssPath = path.join(__dirname, 'style.css');
+
+        fs.readFile(cssPath, (err, data) => {
+            if (err) {
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.end('Internal Server Error');
+            } else {
+                res.writeHead(200, { 'Content-Type': 'text/css' });
+                res.end(data);
+            }
+        });
+    } else if (req.url === '/script.js') {
+        const jsPath = path.join(__dirname, 'script.js');
+
+        fs.readFile(jsPath, (err, data) => {
+            if (err) {
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.end('Internal Server Error');
+            } else {
+                res.writeHead(200, { 'Content-Type': 'application/javascript' });
+                res.end(data);
+            }
+        });
     } else {
-        // Handle other requests (e.g., CSS, JavaScript files) as needed
-        // You can add more routes and logic here
+        // Handle other requests or 404 Not Found
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Not Found');
     }
 });
 

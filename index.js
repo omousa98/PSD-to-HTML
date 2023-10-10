@@ -1,53 +1,19 @@
-const http = require('http');
-const fs = require('fs');
+const express = require('express');
 const path = require('path');
 
-const server = http.createServer((req, res) => {
-    // Handle requests for the root path ("/")
-    if (req.url === '/' || req.url === '/index.html') {
-        const filePath = path.join(__dirname, 'index.html');
+const app = express();
 
-        fs.readFile(filePath, (err, data) => {
-            if (err) {
-                res.writeHead(500, { 'Content-Type': 'text/plain' });
-                res.end('Internal Server Error');
-            } else {
-                res.writeHead(200, { 'Content-Type': 'text/html' });
-                res.end(data);
-            }
-        });
-    } else if (req.url === '/style.css') {
-        const cssPath = path.join(__dirname, 'style.css');
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-        fs.readFile(cssPath, (err, data) => {
-            if (err) {
-                res.writeHead(500, { 'Content-Type': 'text/plain' });
-                res.end('Internal Server Error');
-            } else {
-                res.writeHead(200, { 'Content-Type': 'text/css' });
-                res.end(data);
-            }
-        });
-    } else if (req.url === '/script.js') {
-        const jsPath = path.join(__dirname, 'script.js');
-
-        fs.readFile(jsPath, (err, data) => {
-            if (err) {
-                res.writeHead(500, { 'Content-Type': 'text/plain' });
-                res.end('Internal Server Error');
-            } else {
-                res.writeHead(200, { 'Content-Type': 'application/javascript' });
-                res.end(data);
-            }
-        });
-    } else {
-        // Handle other requests or 404 Not Found
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('Not Found');
-    }
+// Define your routes
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Define other routes as needed
+
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
